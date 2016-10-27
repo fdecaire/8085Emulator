@@ -30,6 +30,7 @@ namespace Processor
 		public List<OutputDevice> OutputPorts;
 		public InterruptMask IM;
 		public int CPUSpeed { get; set; }
+		// The CPU speed will allow the emulator to run at the clock speed of a real 8085 CPU.
 
 		public Computer()
 		{
