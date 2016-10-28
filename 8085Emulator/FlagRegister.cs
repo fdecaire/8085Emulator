@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Processor
 {
 	//http://www.righto.com/2013/07/reverse-engineering-flag-circuits-in.html
