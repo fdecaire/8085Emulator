@@ -325,7 +325,6 @@ namespace Processor
 					break;
 				default:
 					throw new NotImplementedException();
-					break;
 			}
 
 			return true;
@@ -1138,8 +1137,6 @@ namespace Processor
 		private void GetInput()
 		{
 			throw new NotImplementedException();
-
-			PC++;
 		}
 
 		public void EnableInterrupts()

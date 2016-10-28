@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assembler
 {
@@ -17,31 +13,31 @@ namespace Assembler
 		{
 			if (number.ToUpper().EndsWith("H"))
 			{
-				try
+				number = number.ToUpper().Replace("H", "");
+				for (int i = 0; i < number.Length; i++)
 				{
-					var int32 = Convert.ToInt32(number.Replace("H",""), 16);
-					return true;
+					if (number[i] < '0' || number[i] > '9' && number[i] < 'A' || number[i] > 'F')
+					{
+						return false;
+					}
 				}
-				catch 
-				{
-				
-				}
+
+				return true;
 			}
 			return false;
 		}
 
 		public static bool IsNumber(this string number)
 		{
-			try
+			for (int i = 0; i < number.Length; i++)
 			{
-				var int32 = Convert.ToInt32(number);
-				return true;
+				if (number[i] < '0' || number[i] > '9')
+				{
+					return false;
+				}
 			}
-			catch
-			{
-
-			}
-			return false;
+			
+			return true;
 		}
 
 		public static string ToHex(this string number)
@@ -51,10 +47,8 @@ namespace Assembler
 			{
 				return number.Replace("H", "").HexToInt().ToString("X2");
 			}
-			else
-			{
-				return number.ToInt().ToString("X2");
-			}
+
+			return number.ToInt().ToString("X2");
 		}
 
 		public static int HexToInt(this string number)
