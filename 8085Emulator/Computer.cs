@@ -711,16 +711,75 @@ namespace Processor
 			PC++;
 		}
 
+		// CPI
 		public void CompareImmediate()
 		{
 			var data = ComputerMemory[PC + 1];
 
-			Flags.Zero = (data == A);
+			int tempresult = A - data;
+			
+			SetFlags((byte)(tempresult & 0xff));
 
-			Flags.Carry = (A > data);
+			Flags.Carry = (tempresult >= 0x100 || tempresult < 0);
 
-			//TODO: need to handle the sign bit, this command needs verification
+
+			int temp = (byte)(data + 128) + A;
+
+			//F5 -> 2s compliment = 00001011 = 0x0B
+			//   11111 -> carries
+			//00100101 -> accumulator
+			//00001011 -> data (F5 = 11110101)
+			//00110001 -> result AC=1
+
+			CheckAuxCarry(A.ToBinaryString(), data.TwosComplement().ToBinaryString());
+
 			PC += 2;
+		}
+
+		private void CheckAuxCarry(string num1, string num2)
+		{
+			// add both numbers together and keep track of the carry bits
+			// assume both strings are 8 characters long
+			var carryResult = "00000000".ToCharArray();
+			var a = num1.ToCharArray();
+			var b = num2.ToCharArray();
+			string result = "";
+
+			for (int i = 7; i >= 0; i--)
+			{
+				if (a[i] == '1' && b[i] == '1' && carryResult[i] == '1')
+				{
+					result = "1" + result;
+
+					// carry 1
+					if (i - 1 > -1)
+					{
+						carryResult[i - 1] = '1';
+					}
+				}
+				else if (a[i] == '1' && b[i] == '1' || a[i] == '1' && carryResult[i] == '1' || b[i] == '1' && carryResult[i] == '1')
+				{
+					result = "0" + result;
+
+					// carry 1
+					if (i - 1 > -1)
+					{
+						carryResult[i - 1] = '1';
+					}
+				}
+				else if (a[i] == '1' || b[i] == '1' || carryResult[i] == '1')
+				{
+
+					result = "1" + result;
+				}
+				else
+				{
+					// all zeros
+					result = "0" + result;
+				}
+			}
+
+			Flags.AuxCarry = (carryResult[3] == '1');
 		}
 
 		public void CompareWithAccumulator()
@@ -728,11 +787,12 @@ namespace Processor
 			var regnums = DecodeRegisterNumbers(ComputerMemory[PC]);
 			byte data = ReadRegister(regnums.Source);
 
-			Flags.Zero = (data == A);
+			int tempresult = A - data;
 
-			Flags.Carry = (A > data);
+			SetFlags((byte)(tempresult & 0xff));
 
-			//TODO: need to handle the sign bit, this command needs verification
+			CheckAuxCarry(A.ToBinaryString(), data.TwosComplement().ToBinaryString());
+
 			PC++;
 		}
 
@@ -1455,18 +1515,19 @@ namespace Processor
 			Flags.Sign = (data & 0x80) == 0x80;
 		}
 
-		public void SetAuxCarryFlag(byte beforeResult,byte afterResult)
+		public void SetAuxCarryFlag(byte beforeResult, byte afterResult)
 		{
-			//TODO: need to examine this a lot closer
-			if ((beforeResult & 0x08) > 0)
+			if ((beforeResult & 0x10) != (afterResult & 0x10))
 			{
-				if ((afterResult & 0x08) == 0)
-				{
-					Flags.AuxCarry = true;
-					return;
-				}
+				Flags.AuxCarry = true;
+				return;
 			}
 			Flags.AuxCarry = false;
+		}
+
+		public string BinResult(byte data)
+		{
+			return Convert.ToString(data, 2);
 		}
 	}
 }

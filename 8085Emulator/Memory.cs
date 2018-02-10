@@ -88,6 +88,7 @@ namespace Processor
 
 			program = program.Replace("\n", "");
 			program = program.Replace("\r", "");
+			program = program.Replace(",", "");
 
 
 			// load a string of hex data directly into memory

@@ -189,7 +189,6 @@ namespace Processor.Tests
 		[InlineData(0x30, 0x20, 0x10, 0x10)]
 		public void subtract_flag_results(byte accumulator, byte eregister, byte result, byte flags)
 		{
-			//https://books.google.com/books?id=QUOtjcwP0OUC&pg=PA78&lpg=PA78&dq=8085+ana+instruction&source=bl&ots=50Sp7FP1mg&sig=sBfQTkXUFrMus4X2WWzMlGLCguU&hl=en&sa=X&ved=0ahUKEwj-jq6V-fHPAhUFOD4KHYu0BcQQ6AEIPTAF#v=onepage&q=8085%20ana%20instruction&f=false
 			//ac=0x10,sign=0x80
 
 			// A = F3H  after AEH

@@ -23,13 +23,35 @@ namespace Assembler
 
 	    public void SaveAssemFile(string destinationFile)
 	    {
-		    
-	    }
+			using (var writer = new StreamWriter(destinationFile))
+			{
+				writer.Write(AssemblyCode);
+			}
+		}
 
 	    public void ReadHexFile(string sourceFile)
 	    {
-		    
-	    }
+			using (var reader = new StreamReader(sourceFile))
+			{
+				HexResult = reader.ReadToEnd();
+
+				// remove the colon and next 4 bytes (8 chars) - ":1D000000"
+				bool found = true;
+				while (found)
+				{
+					var pos = HexResult.IndexOf(":", StringComparison.Ordinal);
+
+					if (pos > -1)
+					{
+						HexResult = HexResult.Remove(pos, 9);
+					}
+					else
+					{
+						found = false;
+					}
+				}
+			}
+		}
 
 	    public void SaveHexFile(string destinationFile)
 	    {
@@ -50,7 +72,9 @@ namespace Assembler
 
 	    public void DissassembleCode()
 	    {
-		    
+			var disassembler = new Disassembler();
+
+			AssemblyCode = disassembler.Parse(HexResult);
 	    }
 
 	    private void AppendHexResult(string code)
@@ -328,8 +352,7 @@ namespace Assembler
 						    break;
 					    case OpcodeEnum.MOV:
 						    regPair = sourceLine.Operand.Split(',');
-						    AppendHexResult((0x40 + DestinationRegisterNumber(regPair[0]) + SourceRegisterNumber(regPair[1])).ToHex() +
-						                    " ");
+						    AppendHexResult((0x40 + DestinationRegisterNumber(regPair[0]) + SourceRegisterNumber(regPair[1])).ToHex() + " ");
 						    CurrentAddress += sourceLine.InstructionSize;
 						    break;
 					    case OpcodeEnum.MVI:

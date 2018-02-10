@@ -133,18 +133,37 @@ namespace Processor.Tests
 			Assert.Equal(0x0a,computer.A);
 		}
 
-		[Fact]
-		public void compare_immediate_with_accumulator()
+		[Theory]
+		[InlineData(0x25, 0xf5, 0x15)]
+		[InlineData(0xF5, 0xd5, 0x10)]
+		[InlineData(0x50, 0x70, 0x81)]
+		public void compare_immediate_with_accumulator(byte accumulator, byte tempData, byte flags)
 		{
+			//c=0x01, p=0x04, ac=0x10, z=0x40, sign=0x80
+			// A = 25H
+			// temp = 45H	30H
+			// F = cy=1,ac=1,z=0,p=1,s=0
+
+			// A = F5H
+			// E = d5H
+			// temp = 45H	20H
+			// F = cy=0,ac=1,z=0,p=0,s=0
+
 			var computer = new Computer();
 			computer.Reset();
 
-			computer.A = 0xaa;
-			computer.ComputerMemory[computer.PC] = 0xe6;
-			computer.ComputerMemory[computer.PC + 1] = 0xaa;
+			computer.A = accumulator;
+			computer.ComputerMemory[computer.PC] = 0xfe;
+			computer.ComputerMemory[computer.PC + 1] = tempData;
 			computer.CompareImmediate();
 
-			Assert.Equal(true, computer.Flags.Zero);
+			Assert.Equal(computer.Flags.Carry, (flags & 0x01) > 0);
+			Assert.Equal(computer.Flags.AuxCarry, (flags & 0x10) > 0);
+			Assert.Equal(computer.Flags.Zero, (flags & 0x40) > 0);
+			Assert.Equal(computer.Flags.Parity, (flags & 0x04) > 0);
+			Assert.Equal(computer.Flags.Sign, (flags & 0x80) > 0);
+
+			Assert.Equal(flags, computer.Flags.Register);
 		}
 
 		[Theory]

@@ -5,5 +5,5 @@ install:
   - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release 8085Emulator.sln
-  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./Assembler.Tests/bin/Release/Assembler.Tests.dll
-  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./Processor.Tests/bin/Release/Processor.Tests.dll
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./Assembler.Tests/bin/Release/Assembler.Tests.dll
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./Processor.Tests/bin/Release/Processor.Tests.dll
