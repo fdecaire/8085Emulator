@@ -14,13 +14,13 @@ namespace Assembler
 			if (number.ToUpper().EndsWith("H"))
 			{
 				number = number.ToUpper().Replace("H", "");
-				for (int i = 0; i < number.Length; i++)
-				{
-					if (number[i] < '0' || number[i] > '9' && number[i] < 'A' || number[i] > 'F')
-					{
-						return false;
-					}
-				}
+				foreach (var num in number)
+                {
+                    if (num < '0' || num > '9' && num < 'A' || num > 'F')
+                    {
+                        return false;
+                    }
+                }
 
 				return true;
 			}
@@ -28,17 +28,17 @@ namespace Assembler
 		}
 
 		public static bool IsNumber(this string number)
-		{
-			for (int i = 0; i < number.Length; i++)
-			{
-				if (number[i] < '0' || number[i] > '9')
-				{
-					return false;
-				}
-			}
-			
-			return true;
-		}
+        {
+            foreach (var num in number)
+            {
+                if (num < '0' || num > '9')
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
 		public static string ToHex(this string number)
 		{
@@ -68,7 +68,7 @@ namespace Assembler
 
 		public static string RemoveComments(this string line)
 		{
-			int pos = line.IndexOf(";", StringComparison.Ordinal);
+			var pos = line.IndexOf(";", StringComparison.Ordinal);
 			if (pos > -1)
 			{
 				line = line.Substring(0, pos);
@@ -89,7 +89,7 @@ namespace Assembler
 
 		public static string SpaceByBytes(this string hexdata)
 		{
-			string result = "";
+			var result = "";
 			for (int i = 0; i < hexdata.Length/2; i++)
 			{
 				result += (hexdata.Substring(i*2, 2) + " ");

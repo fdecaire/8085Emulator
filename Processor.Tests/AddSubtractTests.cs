@@ -97,8 +97,8 @@ namespace Processor.Tests
 			computer.DoubleRegisterAdd();
 
 			Assert.Equal(12, computer.L);
-			Assert.Equal(false, computer.Flags.Carry);
-		}
+            Assert.False(computer.Flags.Carry);
+        }
 
 		[Fact]
 		public void double_register_add_with_carry()
@@ -112,13 +112,13 @@ namespace Processor.Tests
 			computer.L = 1;
 			computer.DoubleRegisterAdd();
 
-			Assert.Equal(true, computer.Flags.Carry);
-		}
+            Assert.True(computer.Flags.Carry);
+        }
 
 		[Theory]
 		[InlineData(0x9b, 0x01,true,true)]
 		[InlineData(0x33, 0x33, false, false)]
-		public void decimal_adjust_accumulator(byte input1, byte result, bool carryflag, bool auxcarry)
+		public void decimal_adjust_accumulator(byte input1, byte result, bool carryFlag, bool auxCarry)
 		{
 			var computer = new Computer();
 			computer.Reset();
@@ -127,8 +127,8 @@ namespace Processor.Tests
 			computer.DecimalAdjustAccumulator();
 
 			Assert.Equal(result,computer.A);
-			Assert.Equal(carryflag,computer.Flags.Carry);
-			Assert.Equal(auxcarry,computer.Flags.AuxCarry);
+			Assert.Equal(carryFlag,computer.Flags.Carry);
+			Assert.Equal(auxCarry,computer.Flags.AuxCarry);
 		}
 
 		[Fact]

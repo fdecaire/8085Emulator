@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assembler
+﻿namespace Assembler
 {
 	public class Disassembler
 	{
@@ -26,8 +20,8 @@ namespace Assembler
 		// read the next two hex values as an address
 		private string GetAddressData()
 		{
-			string lower = GetNextHexPair();
-			string higher = GetNextHexPair();
+			var lower = GetNextHexPair();
+			var higher = GetNextHexPair();
 
 			return higher + lower;
 		}
@@ -40,9 +34,9 @@ namespace Assembler
 		public string Parse(string hexData)
 		{
 			_hexData = hexData.Replace(",", "").Replace(" ", "").Replace("\n", "").Replace("\r", "");
-			string assemblyCode = ""; //TODO: convert this into StringBuilder
+			var assemblyCode = ""; //TODO: convert this into StringBuilder
 
-			string nextOpCode = GetNextHexPair();
+			var nextOpCode = GetNextHexPair();
 			while (nextOpCode != "")
 			{
 				assemblyCode += GetAddress();

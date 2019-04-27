@@ -156,13 +156,13 @@ namespace Assembler
 
 		public List<string> GetTokens(string line)
 		{
-			List<string> results = new List<string>();
+			var results = new List<string>();
 
-			bool inToken = false;
-			bool inQuote = false;
-			bool inParens = false;
-			bool inComment = false;
-			string currentToken = "";
+			var inToken = false;
+			var inQuote = false;
+			var inParens = false;
+			var inComment = false;
+			var currentToken = "";
 			for (int i = 0; i < line.Length; i++)
 			{
 				string currentChar = line.Substring(i, 1);

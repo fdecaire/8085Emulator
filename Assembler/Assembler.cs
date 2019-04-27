@@ -547,8 +547,8 @@ namespace Assembler
 
 	    private string ReadByteData(string line)
 	    {
-		    string hexResult = "";
-		    string [] tempVars = line.Split(',');
+		    var hexResult = "";
+		    var tempVars = line.Split(',');
 
 		    foreach (var vars in tempVars)
 		    {
@@ -560,8 +560,8 @@ namespace Assembler
 
 	    private string ReadWordData(string line)
 	    {
-			string hexResult = "";
-			string[] tempVars = line.Split(',');
+			var hexResult = "";
+			var tempVars = line.Split(',');
 
 			foreach (var vars in tempVars)
 			{
@@ -583,118 +583,125 @@ namespace Assembler
 		    {
 			    return AsciiToHex(line);
 		    }
-		    else if (line.Contains("+"))
-		    {
-			    string[] temp = line.Split('+');
-			    int result1 = ReadNumber(temp[0]);
-			    int result2 = ReadNumber(temp[1]);
 
-			    if (result1 == -1 || result2 == -1)
-			    {
-				    if (!_labels.ContainsKey(line))
-				    {
-					    _labels.Add(line, new LabelRecord {name = "", size = bytesize});
-				    }
-				    return $"|{line}|";
-			    }
+            if (line.Contains("+"))
+            {
+                string[] temp = line.Split('+');
+                int result1 = ReadNumber(temp[0]);
+                int result2 = ReadNumber(temp[1]);
 
-			    return (result1 + result2).ToHex().PadRight(bytesize*2, '0');
-		    }
-		    else if (line.Contains("-"))
-		    {
-			    string[] temp = line.Split('-');
-			    int result1 = ReadNumber(temp[0]);
-			    int result2 = ReadNumber(temp[1]);
+                if (result1 == -1 || result2 == -1)
+                {
+                    if (!_labels.ContainsKey(line))
+                    {
+                        _labels.Add(line, new LabelRecord {name = "", size = bytesize});
+                    }
+                    return $"|{line}|";
+                }
 
-			    if (result1 == -1 || result2 == -1)
-			    {
-				    if (!_labels.ContainsKey(line))
-				    {
-						_labels.Add(line, new LabelRecord { name = "", size = bytesize });
-					}
-				    return $"|{line}|";
-			    }
+                return (result1 + result2).ToHex().PadRight(bytesize*2, '0');
+            }
 
-			    return (result1 - result2).ToHex().PadRight(bytesize*2, '0');
-		    }
-		    else if (line.Contains("/"))
-		    {
-			    string[] temp = line.Split('/');
-			    int result1 = ReadNumber(temp[0]);
-			    int result2 = ReadNumber(temp[1]);
+            if (line.Contains("-"))
+            {
+                string[] temp = line.Split('-');
+                int result1 = ReadNumber(temp[0]);
+                int result2 = ReadNumber(temp[1]);
 
-			    if (result1 == -1 || result2 == -1)
-			    {
-				    if (!_labels.ContainsKey(line))
-				    {
-						_labels.Add(line, new LabelRecord { name = "", size = bytesize });
-					}
-				    return $"|{line}|";
-			    }
+                if (result1 == -1 || result2 == -1)
+                {
+                    if (!_labels.ContainsKey(line))
+                    {
+                        _labels.Add(line, new LabelRecord { name = "", size = bytesize });
+                    }
+                    return $"|{line}|";
+                }
 
-			    return (result1/result2).ToHex().PadRight(bytesize*2, '0');
-		    }
-		    else if (line.Contains(" AND "))
-		    {
-			    string[] temp = line.Split(new string[] {" AND "}, StringSplitOptions.None);
-			    int result1 = ReadNumber(temp[0]);
-			    int result2 = ReadNumber(temp[1]);
+                return (result1 - result2).ToHex().PadRight(bytesize*2, '0');
+            }
 
-			    if (result1 == -1 || result2 == -1)
-			    {
-				    if (!_labels.ContainsKey(line))
-				    {
-						_labels.Add(line, new LabelRecord { name = "", size = bytesize });
-					}
-				    return $"|{line}|";
-			    }
+            if (line.Contains("/"))
+            {
+                string[] temp = line.Split('/');
+                int result1 = ReadNumber(temp[0]);
+                int result2 = ReadNumber(temp[1]);
 
-			    return (result1 & result2).ToHex().PadRight(bytesize*2, '0');
-		    }
-		    else if (line.Contains(" OR "))
-		    {
-			    string[] temp = line.Split(new string[] {" OR "}, StringSplitOptions.None);
-			    int result1 = ReadNumber(temp[0]);
-			    int result2 = ReadNumber(temp[1]);
+                if (result1 == -1 || result2 == -1)
+                {
+                    if (!_labels.ContainsKey(line))
+                    {
+                        _labels.Add(line, new LabelRecord { name = "", size = bytesize });
+                    }
+                    return $"|{line}|";
+                }
 
-			    if (result1 == -1 || result2 == -1)
-			    {
-				    if (!_labels.ContainsKey(line))
-				    {
-						_labels.Add(line, new LabelRecord { name = "", size = bytesize });
-					}
-				    return $"|{line}|";
-			    }
+                return (result1/result2).ToHex().PadRight(bytesize*2, '0');
+            }
 
-			    return (result1 | result2).ToHex().PadRight(bytesize*2, '0');
-		    }
-		    else if (line.IsHex())
-		    {
-			    string temp = line.Replace("H", "");
+            if (line.Contains(" AND "))
+            {
+                string[] temp = line.Split(new string[] {" AND "}, StringSplitOptions.None);
+                int result1 = ReadNumber(temp[0]);
+                int result2 = ReadNumber(temp[1]);
 
-			    if (temp.Length > bytesize*2)
-			    {
-				    temp = temp.Substring(temp.Length - bytesize*2, bytesize*2);
-			    }
+                if (result1 == -1 || result2 == -1)
+                {
+                    if (!_labels.ContainsKey(line))
+                    {
+                        _labels.Add(line, new LabelRecord { name = "", size = bytesize });
+                    }
+                    return $"|{line}|";
+                }
 
-			    if (temp.Length < bytesize*2)
-			    {
-				    temp = temp.PadRight(bytesize * 2, '0');
-				}
+                return (result1 & result2).ToHex().PadRight(bytesize*2, '0');
+            }
 
-			    if (bytesize == 2)
-			    {
-				    temp = temp.SwapHex();
-			    }
+            if (line.Contains(" OR "))
+            {
+                string[] temp = line.Split(new string[] {" OR "}, StringSplitOptions.None);
+                int result1 = ReadNumber(temp[0]);
+                int result2 = ReadNumber(temp[1]);
 
-			    return temp;
-		    }
-		    else if (line.IsNumber())
-		    {
-			    return line.ToInt().ToHex().PadRight(bytesize*2, '0');
-		    }
+                if (result1 == -1 || result2 == -1)
+                {
+                    if (!_labels.ContainsKey(line))
+                    {
+                        _labels.Add(line, new LabelRecord { name = "", size = bytesize });
+                    }
+                    return $"|{line}|";
+                }
 
-		    // must be a label
+                return (result1 | result2).ToHex().PadRight(bytesize*2, '0');
+            }
+
+            if (line.IsHex())
+            {
+                string temp = line.Replace("H", "");
+
+                if (temp.Length > bytesize*2)
+                {
+                    temp = temp.Substring(temp.Length - bytesize*2, bytesize*2);
+                }
+
+                if (temp.Length < bytesize*2)
+                {
+                    temp = temp.PadRight(bytesize * 2, '0');
+                }
+
+                if (bytesize == 2)
+                {
+                    temp = temp.SwapHex();
+                }
+
+                return temp;
+            }
+
+            if (line.IsNumber())
+            {
+                return line.ToInt().ToHex().PadRight(bytesize*2, '0');
+            }
+
+            // must be a label
 		    if (!_labels.ContainsKey(line))
 		    {
 				_labels.Add(line, new LabelRecord { name = "", size = bytesize });
@@ -740,11 +747,11 @@ namespace Assembler
 
 	    private string AsciiToHex(string s)
 	    {
-		    string temp = s.Replace("'", "");
+		    var temp = s.Replace("'", "");
 
 			var sb = new StringBuilder();
 
-			byte[] inputBytes = Encoding.UTF8.GetBytes(temp);
+			var inputBytes = Encoding.UTF8.GetBytes(temp);
 
 			foreach (byte b in inputBytes)
 			{

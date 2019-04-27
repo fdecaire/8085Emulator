@@ -73,7 +73,7 @@ namespace Processor.Tests
 
 			computer.ComplementCarry();
 
-			Assert.Equal(false, computer.Flags.Carry);
+			Assert.False(computer.Flags.Carry);
 		}
 
 		[Fact]

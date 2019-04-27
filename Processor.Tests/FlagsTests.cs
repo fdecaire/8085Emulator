@@ -10,7 +10,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetFlags(0);
-			Assert.Equal(true,computer.Flags.Zero);
+			Assert.True(computer.Flags.Zero);
 		}
 
 		[Fact]
@@ -19,7 +19,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetFlags(55);
-			Assert.Equal(false, computer.Flags.Zero);
+			Assert.False(computer.Flags.Zero);
 		}
 
 		[Fact]
@@ -28,7 +28,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetFlags(0x3);
-			Assert.Equal(true, computer.Flags.Parity);
+			Assert.True(computer.Flags.Parity);
 		}
 
 		[Fact]
@@ -37,7 +37,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetFlags(0x1);
-			Assert.Equal(false, computer.Flags.Parity);
+			Assert.False(computer.Flags.Parity);
 		}
 
 		[Fact]
@@ -46,7 +46,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetFlags(0x80);
-			Assert.Equal(true, computer.Flags.Sign);
+			Assert.True(computer.Flags.Sign);
 		}
 
 		[Fact]
@@ -55,7 +55,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetFlags(0x77);
-			Assert.Equal(false, computer.Flags.Sign);
+			Assert.False(computer.Flags.Sign);
 		}
 
 		[Fact]
@@ -64,7 +64,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.Flags.Carry = true;
-			Assert.Equal(true, computer.Flags.Carry);
+			Assert.True(computer.Flags.Carry);
 		}
 
 		[Fact]
@@ -73,7 +73,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.Flags.Carry = false;
-			Assert.Equal(false, computer.Flags.Carry);
+			Assert.False(computer.Flags.Carry);
 		}
 
 		[Fact]
@@ -82,7 +82,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetAuxCarryFlag(0xff,0x83);
-			Assert.Equal(true, computer.Flags.AuxCarry);
+			Assert.True(computer.Flags.AuxCarry);
 		}
 
 		[Theory]
@@ -94,7 +94,7 @@ namespace Processor.Tests
 			var computer = new Computer();
 
 			computer.SetAuxCarryFlag(data1, data2);
-			Assert.Equal(false, computer.Flags.AuxCarry);
+			Assert.False(computer.Flags.AuxCarry);
 		}
 	}
 }

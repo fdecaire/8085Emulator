@@ -16,7 +16,7 @@ namespace Processor.Tests
 			computer.Reset();
 			computer.DisableInterrupts();
 
-			Assert.Equal(false, computer.InterruptsEnabled);
+			Assert.False(computer.InterruptsEnabled);
 		}
 
 		[Fact]
@@ -26,7 +26,7 @@ namespace Processor.Tests
 			computer.Reset();
 			computer.EnableInterrupts();
 
-			Assert.Equal(true, computer.InterruptsEnabled);
+			Assert.True(computer.InterruptsEnabled);
 		}
 	}
 }
